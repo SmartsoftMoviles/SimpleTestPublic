@@ -106,6 +106,129 @@ class ViewController: UIViewController {
                                       style: .cancel, handler: nil))
         self.present(alert, animated: true)
     }
+        func openMapForPlace() {
+        
+        let geocoder = CLGeocoder()
+        let str = "Insurgentes 1143" // A string of the address info you already have
+        geocoder.geocodeAddressString(str) { (placemarksOptional, error) -> Void in
+          if let placemarks = placemarksOptional {
+            //print("placemark| \(placemarks.first)")
+            if let location = placemarks.first?.location {
+                
+                let regionDistance:CLLocationDistance = 700
+                let coordinates = location.coordinate
+                let regionSpan = MKCoordinateRegion(center: coordinates, latitudinalMeters: regionDistance, longitudinalMeters: regionDistance)
+                let options = [
+                    MKLaunchOptionsMapCenterKey: NSValue(mkCoordinate: regionSpan.center),
+                    MKLaunchOptionsMapSpanKey: NSValue(mkCoordinateSpan: regionSpan.span)
+                ]
+                let placemark = MKPlacemark(coordinate: coordinates, addressDictionary: nil)
+                let mapItem = MKMapItem(placemark: placemark)
+                mapItem.name = "Instituto Federal de Telecomunicaciones"
+                mapItem.openInMaps(launchOptions: options)
+                
+            } else {
+              // Could not get a location from the geocode request. Handle error.
+            }
+          } else {
+            // Didn't get any placemarks. Handle error.
+          }
+        }
+
+    }
+    
+    @IBAction func openMaps(_ sender: Any) {
+        self.openMapForPlace()
+    }
+    
+    @IBAction func chatButton(_ sender: Any) {
+        if let chat = self.chat{
+            guard let url = URL(string: chat) else { return }
+            UIApplication.shared.open(url)
+        }
+    }
+    
+    @IBAction func openFacebook(_ sender: Any) {
+        if let face = redes?.facebook{
+            let fbURLWeb = URL(string: face)!
+            let fbURLID = URL(string: "fb://profile/118833024953904")!
+            
+            if UIApplication.shared.canOpenURL(fbURLID) {
+                UIApplication.shared.open(fbURLID, options: [:])
+            } else {
+                UIApplication.shared.open(fbURLWeb, options: [:])
+            }
+        }
+    }
+    
+    @IBAction func openTwitter(_ sender: Any) {
+        if let twitter = redes?.twitter{
+            let twitterWeb = URL(string: twitter)!
+            let twitterApp = URL(string: "twitter://user?screen_name=IFT_MX")!
+            
+            if UIApplication.shared.canOpenURL(twitterApp) {
+                UIApplication.shared.open(twitterApp, options: [:])
+            } else {
+                UIApplication.shared.open(twitterWeb, options: [:])
+            }
+        }
+    }
+    
+    @IBAction func openYoutube(_ sender: Any) {
+        if let youtube = redes?.youtube{
+            let youTubeWeb = URL(string: youtube)!
+            let youTubeApp = URL(string: "youtube://www.youtube.com/user/IFTmx/")!
+            
+            if UIApplication.shared.canOpenURL(youTubeApp) {
+                UIApplication.shared.open(youTubeApp, options: [:])
+            } else {
+                UIApplication.shared.open(youTubeWeb, options: [:])
+            }
+        }
+    }
+        
+    @IBAction func openLinkedIn(_ sender: Any) {
+        if let originalLinked = redes?.linkedin{
+            var linkedInWeb: URL?
+            var linkedInApp: URL?
+            //let originalLinked = "https://www.linkedin.com/company/instituto-federal-de-telecomunicaciones/"
+            
+            if let encoded = originalLinked.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
+                let linkedUrlWeb = URL(string: encoded) {
+                linkedInWeb = linkedUrlWeb
+                //print(linkedUrlWeb)
+            }
+            
+            let originalApp = "linkedin://company/instituto-federal-de-telecomunicaciones"
+            if let encoded = originalApp.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
+                let linkedUrlApp = URL(string: encoded) {
+                linkedInApp = linkedUrlApp
+                //print(linkedUrlApp)
+            }
+            
+            if UIApplication.shared.canOpenURL(linkedInApp!) {
+                UIApplication.shared.open(linkedInApp!, options: [:])
+            } else {
+                UIApplication.shared.open(linkedInWeb!, options: [:])
+            }
+        }
+    }
+    
+    @IBAction func openInsta(_ sender: Any) {
+        let username =  "iftmexico"
+        let appURL = URL(string: "instagram://user?username=\(username)")!
+        let application = UIApplication.shared
+
+        if application.canOpenURL(appURL) {
+            application.open(appURL)
+        } else {
+            if let insta = redes?.instagram{
+                // if Instagram app is not installed, open URL inside Safari
+                let webURL = URL(string: insta)!
+                application.open(webURL)
+            }
+        }
+    }
 }
 
 // MARK: OTHER SOURCES
