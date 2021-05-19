@@ -111,6 +111,7 @@ class ViewController: UIViewController {
 // MARK: OTHER SOURCES
 /// # Extensión: Tabla
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
+    /// # Datasource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listaMascotas.count
     }
@@ -126,6 +127,7 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
         cell?.accessoryType = .disclosureIndicator
         return cell!
     }
+    /// # Delegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = listaMascotas[indexPath.row]
         let message = "\(item.nombre) es un \(item.imagen)"
