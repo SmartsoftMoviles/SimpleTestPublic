@@ -21,6 +21,9 @@ class ViewController: UIViewController {
         configureNavigationDefault()
         tableMascotas.dataSource = self
         tableMascotas.delegate = self
+        var = 
+        var = 
+        var = "asda + 0" + 0
     }
     
     func moveTable() {
